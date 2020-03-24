@@ -1,7 +1,7 @@
 "use strict";
 let end = 1;
 let task_list = [];
-let datearr = [];
+
 var readlineSync = require('readline-sync')
 do {
 
@@ -14,6 +14,24 @@ do {
         this.urg_or_not = urg_or_not;
         this.priv_shar = priv_shar;
         this.deadline = deadline;
+       
+    }
+    Task.prototype.RemoveTask = function(){
+
+        console.log("test RemoveTask")
+        
+        var date_remov = this.deadline;
+            var date_removs = date_remov.toString(); 
+            
+            for (var i = task_list.length - 1; i >= 0; --i) {
+                var temp_task = task_list[i];
+                var temp_dead = temp_task.deadline;
+                var temp_deads = temp_dead.toString(); 
+                if ( temp_deads == date_remov) {
+                    task_list.splice(i,1);
+                }
+            }
+        
     }
 
     //Main menu
@@ -31,6 +49,7 @@ do {
         //insert new task
         case 'insert a new task':
             var task = new Task();
+            
             //
             task.text_desc = readlineSync.question('Please describe your task: ');
             if (task.text_desc == "") {
@@ -52,13 +71,16 @@ do {
             console.log("Pleas enter date in format: yyyy,mm,dd,hh,mm")
             let dates = readlineSync.prompt(["Pleas enter date in format: yyyy,mm,dd,hh:min"]);
             task.deadline = new Date(dates)
-            var temp_deadss=task.deadline.toString();
-            datearr.push(temp_deadss); 
-
+            var end_date = Date.parse(new Date(dates));
+            var start_date = Date.now();
+            var time_to_remove = end_date - start_date
+            console.log(start_date)
+            console.log(time_to_remove)
+            
             // push filled task in to the task_list array 
-            //console.log(task)
+            //console.log(task) function(){task.RemoveTask();}
             task_list.push(task);
-
+            setTimeout(task.RemoveTask,2000,'testsetTimegagagaga');
             break;
 
 
@@ -97,6 +119,7 @@ do {
             task_list.sort(compare);
 
             console.log(task_list);
+            
             break;
 
 
